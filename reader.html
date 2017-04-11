@@ -129,62 +129,75 @@
         top: 25px;
         font-size: 12px;
     }
-    .ft_pannel{
-    position: fixed;
-    bottom: 60px;
-    height: 135px;
-    width: 100%;
-    background: #fff;
-    z-index: 999;
-    color: #656565;
-}
-.child_mod {
-    padding: 2px 10px;
-    margin: 15px;
-    text-align: center;
-}
-
-.child_mod button:nth-child(2) {
-    margin-right: 10px;
-}
-.font_button {
-    background: none;
-    border: 1px solid #8c8c8c;
-    color: #656565;
-    border-radius: 16px;
-    padding: 2px 40px;
-    font-size: 23px;
-}
-.bk_container {
-    position: relative;
-    vertical-align: -14px;
-    width: 30px;
-    height: 30px;
-    border-radius: 15px;
-    background: #fff;
-    display: inline-block;
-    margin: 0 8px;
-}
-.bk_container_white {
-    background: #f7eee5;
-}
-.bk_container_paple {
-    background: #e9dfc7;
-}
-.bk_container_grey {
-    background: #a4a4a4;
-}
-.bk_container_green {
-    background: #cdefce;
-}
-.bk_container_blue {
-    background: #283548;
-}
+    
+    .ft_pannel {
+        position: fixed;
+        bottom: 60px;
+        height: 135px;
+        width: 100%;
+        background: #fff;
+        z-index: 999;
+        color: #656565;
+    }
+    
+    .child_mod {
+        padding: 2px 10px;
+        margin: 15px;
+        text-align: center;
+    }
+    
+    .child_mod button:nth-child(2) {
+        margin-right: 10px;
+    }
+    
+    .font_button {
+        background: none;
+        border: 1px solid #8c8c8c;
+        color: #656565;
+        border-radius: 16px;
+        padding: 2px 40px;
+        font-size: 23px;
+    }
+    
+    .bk_container {
+        position: relative;
+        vertical-align: -14px;
+        width: 30px;
+        height: 30px;
+        border-radius: 15px;
+        background: #fff;
+        display: inline-block;
+        margin: 0 8px;
+    }
+    
+    .bk_container_white {
+        background: #f7eee5;
+    }
+    
+    .bk_container_paple {
+        background: #e9dfc7;
+    }
+    
+    .bk_container_grey {
+        background: #a4a4a4;
+    }
+    
+    .bk_container_green {
+        background: #cdefce;
+    }
+    
+    .bk_container_blue {
+        background: #283548;
+    }
+    
+    .bk_container_current {
+        border: 1px solid #ff7800;
+    }
     </style>
 </head>
 
 <body>
-    <nav>
+    <nav id="nav_tag" style="display: none;">
         <div class="back_icon" id="back_icon"></div>
         <h4 class="nav_title">书架</h4>
     </nav>
@@ -196,7 +209,7 @@
             </p>
         </div>
     </div>
-    <div class="ft_pannel " id="" style="display: block;">
+    <div class="ft_pannel " id="ft_pannel" style="display: none;">
         <div class="child_mod">
             <!-- <span>字号</span> -->
             <button id="large_font" class="font_button">A+</button>
@@ -204,24 +217,14 @@
         </div>
         <div class="child_mod">
             <!-- <span>背景</span> -->
-            <div id="first_day" class="bk_container bk_container_white" data_background="#f7eee5">
-                <div class="bk_container_current" style="display: block;"></div>
-            </div>
-            <div class="bk_container bk_container_paple" data_background="#e9dfc7">
-                <div class="bk_container_current" style="display: block;"></div>
-            </div>
-            <div class="bk_container bk_container_grey" data_background="#a4a4a4">
-                <div class="bk_container_current" style="display: block;"></div>
-            </div>
-            <div class="bk_container bk_container_green" data_background="#cdefce">
-                <div class="bk_container_current" style="display: block;"></div>
-            </div>
-            <div id="last_night" class="bk_container bk_container_blue" data_background="#283548">
-                <div class="bk_container_current" style="display: block;"></div>
-            </div>
+            <div id="first_day" class="bk_container bk_container_white bk_container_current" data_background="#f7eee5"></div>
+            <div class="bk_container bk_container_paple" data_background="#e9dfc7"></div>
+            <div class="bk_container bk_container_grey" data_background="#a4a4a4"></div>
+            <div class="bk_container bk_container_green" data_background="#cdefce"></div>
+            <div id="last_night" class="bk_container bk_container_blue" data_background="#283548"></div>
         </div>
     </div>
-    <div class="bottom">
+    <div class="bottom" id="bottom_tag" style="display: none;">
         <div class="item" id="menu_button">
             <div class="item_warp">
                 <div class="icon icon_menu"></div>
@@ -238,7 +241,7 @@
                 </div>
             </div>
         </div>
-        <div class="item current" id="night_button">
+        <div class="item" id="night_button">
             <div class="item_warp" id="night_icon">
                 <div class="icon icon_night"></div>
                 <div class="icon_text">
@@ -247,6 +250,83 @@
             </div>
         </div>
     </div>
+    <script src="./js/zepto.min.js"></script>
+    <script src="./js/touch.js"></script>
+    <script>
+    window.jQuery = $;
+    </script>
+    <script>
+    (function() {
+
+        var HandleData = {
+            //本地存储 加prefix区别
+            prefix: 'h5_reader_',
+            StorageGetter: function(key) {
+                return localStorage.getItem(this.prefix + key);
+            },
+            StorageSetter: function(key, val) {
+                return localStorage.setItem(this.prefix + key, val)
+            },
+            //jsonp方法
+            getJSONP: function(url, callback) {
+                return $.jsonp({
+                    url: url,
+                    cache: true,
+                    callback: 'duokan_fiction_chapter',
+                    success: function(result) {
+                        var data = $.base64.decode(result);
+                        var json = decodeURIComponent(escape(data));
+                        callback(json);
+                    }
+                })
+            }
+        }
+
+        $("#back_icon").tap(function() {
+            location.href = './index.html'
+        });
+        $('#container').tap(function() {
+            if ($("#nav_tag").css('display') == 'none') {
+                $("#bottom_tag").show();
+                $("#nav_tag").show();
+            } else {
+                $("#bottom_tag").hide();
+                $("#nav_tag").hide();
+                $("#ft_pannel").hide();
+                $("#font_button").removeClass('current');
+            }
+        });
+        $("#font_button").tap(function() {
+            if ($("#ft_pannel").css('display') == 'none') {
+                $("#ft_pannel").show();
+                $("#font_button").addClass('current');
+            } else {
+                $("#ft_pannel").hide();
+                $("#font_button").removeClass('current');
+            }
+        });
+        $('#night_button').click(function() {
+            //todo 触发背景切换事件
+            $("#ft_pannel").hide();
+            $('.bk_container').removeClass('bk_container_current');
+            if ($('#night_button').hasClass('current')) {
+                //黑变白
+                $('#last_night').addClass('bk_container_current');
+                $('#night_button').removeClass('current')
+                initBackground = '#f7eee5';
+                $('body').css('background', initBackground);
+                HandleData.StorageSetter('background', initBackground);
+            } else {
+                //白变黑
+                $('#first_day').addClass('bk_container_current');
+                $('#night_button').addClass('current')
+                initBackground = '#283548';
+                $('body').css('background', initBackground);
+                HandleData.StorageSetter('background', initBackground);
+            }
+        })
+    })()
+    </script>
 </body>
 
 </html>

@@ -258,14 +258,7 @@
     </script>
     <script>
     (function() {
-        var Dom = {
-            main_view: $("#main_view"),
-            single_cover: $(".single_cover"),
-            // footer_ul: $("#footer_ul"),
-            // footer_chunk: $("#footer_chunk"),
-            // footer_list: $("#footer_list"),
-
-        };
+        
         //功能函数
         function togglelist(e) {
             console.log(e)
@@ -273,14 +266,14 @@
                 return;
             } else {
                 $("#footer_chunk,#footer_list").toggleClass("footer_li_activity")
-                Dom.main_view.toggleClass("main_list")
+                $("#main_view").toggleClass("main_list")
             }
         }
         //事件绑定
         $("#footer_chunk,#footer_list").tap(function(e) {
             togglelist(e)
         });
-        Dom.single_cover.tap(function() {
+        $(".single_cover").tap(function() {
             location.href = './reader.html'
         });
     })() //闭包不影响全局
