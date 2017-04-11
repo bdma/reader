@@ -1,0 +1,16 @@
+{
+  "name": "reder_demo",
+  "version": "1.0.0",
+  "description": "1，尽量减少repaint，reflow\r     2，缓存了大量可缓存的数据，localStorage\r     3，大量transform动画代替DOM操作\r     4，未对非static 定位元素使用transform\r     5，适当使用硬件加速 transform:translate(0,0,0);",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "browser-sync start --server --files 'css/*.css, *.html'"
+  },
+  "author": "qinghe",
+  "license": "ISC",
+  "devDependencies": {
+    "browser-sync": "^2.18.8",
+    "zepto": "^1.2.0"
+  }
+}
