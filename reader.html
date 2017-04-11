@@ -365,8 +365,8 @@
         $('.bk_container').forEach(function(item, index, array) {
             console.log("item" + index + ":" + "=" + item)
 
-            $(item).removeClass('bk_container_current')
-            $(item).tap(function() {
+            $(item).on('click',function() {
+                $('.bk_container').removeClass('bk_container_current')
                 if ($(this).hasClass('bk_container_current')) {
                     return;
                 } else {
