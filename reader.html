@@ -37,11 +37,11 @@
     .container {
         overflow: hidden;
         background-color: #f7f6f2;
+        color: #242424;
+        font-size: 14px;
     }
     
     .text_container {
-        font-size: 14px;
-        color: #242424;
         line-height: 31px;
         padding: 15px;
     }
@@ -255,8 +255,11 @@
     <script>
     window.jQuery = $;
     </script>
+    <script src="js/jquery.base64.js"></script>
+    <script src="js/jquery.jsonp.js"></script>
     <script>
     (function() {
+
 
         var HandleData = {
             //本地存储 加prefix区别
@@ -280,6 +283,13 @@
                     }
                 })
             }
+        };
+        var initBackground = '#f7eee5',
+            initColor = '#242424';
+        var initFontSize = HandleData.StorageGetter('font_size');
+        initFontSize = parseInt(initFontSize);
+        if (!initFontSize) {
+            initFontSize = 14;
         }
 
         $("#back_icon").tap(function() {
@@ -297,6 +307,7 @@
             }
         });
         $("#font_button").tap(function() {
+            $('.item').removeClass('current');
             if ($("#ft_pannel").css('display') == 'none') {
                 $("#ft_pannel").show();
                 $("#font_button").addClass('current');
@@ -308,23 +319,65 @@
         $('#night_button').click(function() {
             //todo 触发背景切换事件
             $("#ft_pannel").hide();
+            $('#font_button').removeClass('current');
             $('.bk_container').removeClass('bk_container_current');
+            console.log("hasClass:", $('#night_button').hasClass('current'))
             if ($('#night_button').hasClass('current')) {
-                //黑变白
-                $('#last_night').addClass('bk_container_current');
+                //黑变白   
+                $('#first_day').addClass('bk_container_current');
                 $('#night_button').removeClass('current')
                 initBackground = '#f7eee5';
-                $('body').css('background', initBackground);
+                initColor = '#242424';
+                $('#container').css('background', initBackground);
+                $('#container').css('color', initColor);
                 HandleData.StorageSetter('background', initBackground);
+                HandleData.StorageSetter('color', initColor);
             } else {
                 //白变黑
-                $('#first_day').addClass('bk_container_current');
+                $('#last_night').addClass('bk_container_current');
                 $('#night_button').addClass('current')
                 initBackground = '#283548';
-                $('body').css('background', initBackground);
+                initColor = '#555555;';
+                $('#container').css('background', initBackground);
+                $('#container').css('color', initColor);
                 HandleData.StorageSetter('background', initBackground);
+                HandleData.StorageSetter('color', initColor);
             }
-        })
+        });
+        $('#large_font').click(function() {
+            if (initFontSize > 20) {
+                alert('字号不能更大了！程序猿正在改提示框！')
+                return;
+            }
+            initFontSize += 1;
+            $('#container').css('font-size', initFontSize);
+            HandleData.StorageSetter('font_size', initFontSize);
+        });
+        $('#small_font').tap(function() {
+            if (initFontSize < 12) {
+                alert('字号不能更小了！程序猿正在改提示框！')
+                return;
+            }
+            initFontSize -= 1;
+            $('#container').css('font-size', initFontSize);
+            HandleData.StorageSetter('font_size', initFontSize);
+        });
+        $('.bk_container').forEach(function(item, index, array) {
+            console.log("item" + index + ":" + "=" + item)
+
+            $(item).removeClass('bk_container_current')
+            $(item).tap(function() {
+                if ($(this).hasClass('bk_container_current')) {
+                    return;
+                } else {
+                    $(this).addClass('bk_container_current')
+                    initBackground = $(this).attr('data_background');
+                    $('#container').css('background', initBackground);
+                    HandleData.StorageSetter('background', initBackground);
+
+                }
+            });
+        });
     })()
     </script>
 </body>
